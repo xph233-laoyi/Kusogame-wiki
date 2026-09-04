@@ -44,10 +44,10 @@ npx quartz build --serve
 
 需要你的 GitHub 账号。以下用 `<你的用户名>` 和 `<仓库名>` 代替。
 
-1. **建仓库**：打开 https://github.com/new ，仓库名填（例如）`kusogame-wiki`，
+1. **建仓库**：打开 https://github.com/new ，仓库名填 `Kusogame-wiki`（注意大写，须与已建一致），
    **不要**勾选 README / license / .gitignore（会和现有文件冲突），建完留空即可。
 
-2. **推送上线**（origin 已预先指向 `xph233-laoyi/kusogame-wiki`，直接推即可）：
+2. **推送上线**（origin 已预先指向 `xph233-laoyi/Kusogame-wiki`，直接推即可）：
    ```bat
    cd /d E:\desk\kusogame-wiki
    git push -u origin v5
@@ -57,9 +57,9 @@ npx quartz build --serve
 3. **打开 Pages**：进仓库 **Settings → Pages**，在 "Build and deployment" 的 Source 下拉选 **GitHub Actions**。
 
 4. **（已配好，可跳过）**：`quartz.config.yaml` 的 `baseUrl` 已填为
-   `xph233-laoyi.github.io/kusogame-wiki`，无需改动。
+   `xph233-laoyi.github.io/Kusogame-wiki`，无需改动。
 
-5. **完事**：你的网址是 `https://xph233-laoyi.github.io/kusogame-wiki/`
+5. **完事**：你的网址是 `https://xph233-laoyi.github.io/Kusogame-wiki/`
 
 > 若 push 报 "身份不明"，先执行：
 > ```

@@ -6,7 +6,7 @@ configuration:
   enablePopovers: true
   analytics: null
   locale: zh-CN
-  baseUrl: xph233-laoyi.github.io/kusogame-wiki
+  baseUrl: xph233-laoyi.github.io/Kusogame-wiki
   ignorePatterns:
     - private
     - templates
