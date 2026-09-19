@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>库索盖姆 · 地图</title>
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+  :root{
+    --ink:#2b2118; --paper:#f6f1e6; --gold:#b8860b; --line:#cbbfa6;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font-family:"Noto Serif SC","Songti SC",Georgia,serif;background:var(--paper);color:var(--ink)}
+  #map{position:absolute;inset:0;background:#faf7f0}
+
+  /* ---------- 顶栏 ---------- */
+  #bar{
+    position:absolute;top:0;left:0;right:0;z-index:1000;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:10px 16px;
+    background:linear-gradient(180deg,rgba(246,241,230,.97),rgba(246,241,230,.86));
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(6px);
+  }
+  #bar h1{margin:0;font-size:17px;letter-spacing:.14em;font-weight:600;white-space:nowrap}
+  #bar h1 small{font-size:11px;letter-spacing:.22em;color:#8a7a5e;font-weight:400;margin-left:8px}
+  .grp{display:flex;gap:6px;align-items:center}
+  .grp>label{font-size:11px;color:#8a7a5e;letter-spacing:.1em}
+  button.tab{
+    font:inherit;font-size:12.5px;letter-spacing:.06em;
+    padding:5px 13px;border:1px solid var(--line);background:#fffdf8;color:var(--ink);
+    border-radius:2px;cursor:pointer;transition:.15s;
+  }
+  button.tab:hover{border-color:var(--gold);color:var(--gold)}
+  button.tab.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  #hint{font-size:11.5px;color:#8a7a5e;letter-spacing:.05em}
+  #hint b{color:var(--gold)}
+
+  /* ---------- 标记 ---------- */
+  .pin{position:relative;transform:translate(-50%,-50%)}
+  .pin .dot{
+    width:13px;height:13px;border-radius:50%;background:#b3261e;
+    border:2.5px solid #fffdf8;box-shadow:0 1px 6px rgba(0,0,0,.45);
+    cursor:pointer;transition:transform .15s;
+  }
+  .pin:hover .dot{transform:scale(1.45);background:var(--gold)}
+  .pin.region .dot{width:16px;height:16px;background:#5b3a86;border-radius:3px;transform:rotate(45deg)}
+  .pin.region:hover .dot{background:var(--gold);transform:rotate(45deg) scale(1.3)}
+  .pin.void .dot{background:#4a4a4a;border-style:dashed}
+
+  /* hover 小标签 */
+  .leaflet-tooltip.kname{
+    background:rgba(43,33,24,.92);color:var(--paper);border:0;border-radius:2px;
+    font-family:inherit;font-size:12.5px;letter-spacing:.06em;
+    padding:3px 9px;box-shadow:0 2px 8px rgba(0,0,0,.3);
+  }
+  .leaflet-tooltip.kname::before{display:none}
+
+  /* ---------- 弹窗 ---------- */
+  .leaflet-popup-content-wrapper{
+    background:var(--paper);border-radius:2px;border:1px solid var(--line);
+    box-shadow:0 6px 24px rgba(0,0,0,.22);
+  }
+  .leaflet-popup-content{margin:0;width:290px!important}
+  .leaflet-popup-tip{background:var(--paper);border:1px solid var(--line)}
+  .card{padding:14px 16px 13px}
+  .card .cat{font-size:10.5px;letter-spacing:.22em;color:#9a8a6a;margin-bottom:5px}
+  .card h3{margin:0 0 8px;font-size:17px;letter-spacing:.07em;font-weight:600}
+  .card p{margin:0 0 8px;font-size:12.8px;line-height:1.75;color:#4a4038}
+  .card .kv{font-size:12px;line-height:1.9;color:#5a5044}
+  .card .kv i{font-style:normal;color:#9a8a6a;margin-right:7px;letter-spacing:.08em}
+  .card a.more{
+    display:inline-block;margin-top:9px;font-size:12px;letter-spacing:.08em;
+    color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(184,134,11,.45);
+  }
+  .card a.more:hover{border-bottom-color:var(--gold)}
+  .card .todo{display:inline-block;margin-top:9px;font-size:11px;color:#9a8a6a;letter-spacing:.06em}
+
+  /* ---------- 取坐标 ---------- */
+  body.picking #map{cursor:crosshair}
+  #toast{
+    position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:1200;
+    background:rgba(43,33,24,.94);color:var(--paper);
+    padding:9px 18px;border-radius:2px;font-size:13px;letter-spacing:.08em;
+    opacity:0;pointer-events:none;transition:.2s;
+  }
+  #toast.on{opacity:1}
+  #picklog{
+    position:absolute;right:0;top:0;bottom:0;width:0;z-index:1100;overflow:hidden;
+    background:rgba(246,241,230,.98);border-left:1px solid var(--line);transition:width .2s;
+  }
+  #picklog.on{width:250px;overflow:auto}
+  #picklog .inner{padding:14px;font-size:12px;line-height:2;font-family:ui-monospace,Consolas,monospace}
+  #picklog h4{margin:0 0 10px;font-family:inherit;font-size:12.5px;letter-spacing:.14em;color:#8a7a5e}
+  #picklog div.row{cursor:pointer;border-bottom:1px dotted var(--line);padding:2px 0}
+  #picklog div.row:hover{color:var(--gold)}
+
+  .leaflet-control-zoom a{background:#fffdf8!important;color:var(--ink)!important;border-color:var(--line)!important}
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="bar">
+  <h1>库索盖姆<small>KUSOGAME</small></h1>
+
+  <div class="grp">
+    <label>底图</label>
+    <button class="tab on" data-layer="political">政治</button>
+    <button class="tab" data-layer="terrain">地形</button>
+    <button class="tab" data-layer="biome">生态</button>
+  </div>
+
+  <div class="grp">
+    <label>标记</label>
+    <button class="tab on" data-toggle="pins">显示</button>
+  </div>
+
+  <div class="grp">
+    <button class="tab" id="pickBtn">取坐标</button>
+  </div>
+
+  <div id="hint">滚轮缩放 · 拖动平移 · 点标记看设定</div>
+</div>
+
+<div id="toast"></div>
+<div id="picklog"><div class="inner"><h4>取坐标</h4><div id="pickrows"></div></div></div>
+
+<script src="vendor/leaflet.js"></script>
+<script>
+/* =====================================================================
+   库索盖姆 · 地图
+   底图：8192 × 4711（三张图层像素级对齐）
+   标记坐标 = 底图像素坐标（左上为原点），脚本内部自动翻转 Y 轴
+   ===================================================================== */
+
+const W = 8192, H = 4711;
+const ROOT = '../../';                       // 站点根目录（相对于 /static/map/）
+const page = p => ROOT + p.split('/').map(encodeURIComponent).join('/');
+
+/* ---------- 图层 ---------- */
+const LAYERS = {
+  political: { file: 'political.webp', name: '政治地图' },
+  terrain:   { file: 'terrain.webp',   name: '地形地图' },
+  biome:     { file: 'biome.webp',     name: '生态群系地图' },
+};
+
+/* ---------- 知识节点 ----------
+   x, y  ：底图像素坐标
+   kind  ：power = 势力 ｜ region = 区域总称 ｜ place = 地点 ｜ void = 空白/待建
+   ------------------------------------------------------------------ */
+const NODES = [
+  {
+    name: '吉尔斯维亚帝国', kind: 'power', x: 3871, y: 2362,
+    kv: [['政体','君主立宪代议制 · 君议双轴'],['君主','提比略·奥古斯塔（第二十一世）'],['魔法观','"必要的恶"，严格管制']],
+    desc: '大陆最古老的英雄国度，由奥古斯塔一世（吉尔斯）建立。皇廷坐奥古斯塔、元老院坐科斯顿，两地之间的驿道就是帝国的政治命脉。西境正与库尔兰僵持。',
+    link: '03-地理与势力/吉尔斯维亚帝国',
+  },
+  {
+    name: '瓦利亚罗斯公国', kind: 'power', x: 4250, y: 1044,
+    kv: [['核心','团结 · 分享 · 适应'],['立国','北境民变与《凛冬之约》'],['资源','禁魔黑钢（受帝国控制）']],
+    desc: '北境公国，缘起于帝国三世昏庸时的北方民变。以《冻土盟约》臣服于帝国，换来了冶金、造船与商队，也换来了技术依赖。',
+    link: '03-地理与势力/瓦利亚罗斯公国',
+  },
+  {
+    name: '龙尼芝顿王国', kind: 'power', x: 6014, y: 2556,
+    kv: [['政体','双王制（战争王 / 内政王）'],['核心','尚武 · 荣耀 · 传统'],['起源','登陆东海岸的海外强盗']],
+    desc: '体魄强化型英雄后裔。战争王靠战功推举、是消耗品；内政王世袭掌粮秣铸币——双王制的真相是钱在管刀。',
+    link: '03-地理与势力/龙尼芝顿王国',
+  },
+  {
+    name: '湾城联邦', kind: 'power', x: 1069, y: 2707,
+    kv: [['政体','城邦共和联盟 · 总统十年一选'],['导向','重商主义'],['武力','公民护卫队 · 千机弩队']],
+    desc: '西海岸破碎岸线上的数十座海湾城邦。联邦只管海运安全、关税同盟与对外缔约，底牌是"退出权"。帝国的违禁魔法器具，多半最终流到这里。',
+    link: '03-地理与势力/湾城联邦',
+  },
+  {
+    name: '瑟拉王国', kind: 'power', x: 1859, y: 2965,
+    kv: [['政体','神权君主制（星辰先知掌权）'],['核心','知识 · 神秘学 · 守护'],['关键人物','星辰先知·阿丝拉']],
+    desc: '坐落在陨落之地旁的沙漠神权国。世代的好奇燃尽之后，"无法解释"被归于神创。可伊斯特魔法学院仍在做实证研究——神权从诞生那天起就含着一句自己不敢说完的话。',
+    link: '03-地理与势力/瑟拉王国',
+  },
+  {
+    name: '库尔兰', kind: 'power', x: 2904, y: 3016,
+    kv: [['政体','汗国 · 三大属地 + 千户'],['首都','金帐京（镀金的大帐）'],['关键人物','都兰（苍原可汗）· 阿古拉']],
+    desc: '都兰把帝国反攻逼出的难民变成了权力。他没有建城，只把大帐镀上金边。东境与帝国僵持——谁也赢不了，只有边民在流血。',
+    link: '03-地理与势力/库尔兰',
+  },
+  {
+    name: '游牧氏族', kind: 'power', x: 3185, y: 2849,
+    kv: [['政体','部落散居，无共主'],['核心','迁徙 · 牧养 · 不臣'],['身份','未被并入库尔兰者']],
+    desc: '与库尔兰同出一源，却仍是老样子：小股人马，抢完就跑。同样的马、同样的路——一个成了国，一个还是散沙。',
+    link: '03-地理与势力/游牧氏族',
+  },
+  {
+    name: '青沼领', kind: 'power', x: 2363, y: 3478,
+    kv: [['政体','无政府（自发秩序与破坏者并存）'],['地形','沼泽与雨林'],['关键人物','无名剑客（失忆前是这里的前镖师）']],
+    desc: '附着者怪物栖息之地，也是亡命之徒的法外之地。主角无名失忆前在此护送穿越沼泽的商队与旅人。',
+    link: '03-地理与势力/青沼领',
+  },
+  {
+    name: '荒原诸部', kind: 'region', x: 3050, y: 3120,
+    kv: [['范围','瑟拉以东、吉尔斯维亚以西的干旱草原带'],['内含','库尔兰 · 游牧氏族']],
+    desc: '区域总称。这里没有驿道、没有驿站，马就是消息的唯一载体——草原势力天然比定居文明更快，这也正是帝国解不开的死局。',
+    link: '03-地理与势力/荒原诸部',
+  },
+  {
+    name: '陨落之地', kind: 'place', x: 1839, y: 2761,
+    kv: [['性质','瑟拉境内的一块飞地'],['意义','"闯入者"的坠落点']],
+    desc: '闯入者陨石坠落之处，被山形符号围绕。瑟拉神权不是"好奇星异物质"——他们是住在伤口上。',
+    link: '02-年表',
+  },
+  {
+    name: '群岛', kind: 'void', x: 6584, y: 3518,
+    kv: [['状态','尚无条目']],
+    desc: '政治图最东端的岛群。设定库里还没有它的位置。',
+    link: null,
+  },
+];
+
+/* =====================================================================
+   地图
+   ===================================================================== */
+const bounds = [[0, 0], [H, W]];
+const map = L.map('map', {
+  crs: L.CRS.Simple,
+  minZoom: -4, maxZoom: 1,
+  zoomSnap: 0.25, zoomDelta: 0.5, wheelPxPerZoomLevel: 90,
+  attributionControl: false,
+  zoomControl: false,
+});
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+map.fitBounds(bounds);
+
+// 底图图层（三张叠加，靠 z-index / opacity 切换）
+const overlays = {};
+for (const [key, cfg] of Object.entries(LAYERS)) {
+  overlays[key] = L.imageOverlay(encodeURIComponent(cfg.file), bounds, {
+    className: 'basemap', opacity: key === 'political' ? 1 : 0,
+  }).addTo(map);
+}
+
+function setLayer(key) {
+  for (const [k, ov] of Object.entries(overlays)) ov.setOpacity(k === key ? 1 : 0);
+  document.querySelectorAll('[data-layer]').forEach(b =>
+    b.classList.toggle('on', b.dataset.layer === key));
+}
+document.querySelectorAll('[data-layer]').forEach(b =>
+  b.addEventListener('click', () => setLayer(b.dataset.layer)));
+
+/* ---------- 坐标换算：底图像素(左上原点) → Leaflet 经纬度 ---------- */
+const toLatLng = n => [H - n.y, n.x];
+
+/* ---------- 弹窗内容 ---------- */
+const KIND_LABEL = { power: '势力', region: '区域', place: '地点', void: '待建' };
+
+function popupHTML(n) {
+  const kv = (n.kv || [])
+    .map(([k, v]) => `<div class="kv"><i>${k}</i>${v}</div>`).join('');
+  const foot = n.link
+    ? `<a class="more" href="${page(n.link)}">查看设定 →</a>`
+    : `<span class="todo">设定尚未建立</span>`;
+  return `<div class="card">
+      <div class="cat">${KIND_LABEL[n.kind] || ''}</div>
+      <h3>${n.name}</h3>
+      <p>${n.desc}</p>
+      ${kv}
+      ${foot}
+    </div>`;
+}
+
+/* ---------- 标记 ---------- */
+const markers = [];
+for (const n of NODES) {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="pin ${n.kind}"><div class="dot"></div></div>`,
+    iconSize: [0, 0], iconAnchor: [0, 0],
+  });
+  const m = L.marker(toLatLng(n), { icon, riseOnHover: true })
+    .bindTooltip(n.name, { className: 'kname', direction: 'top', offset: [0, -10] })
+    .bindPopup(popupHTML(n), { maxWidth: 300, closeButton: true })
+    .addTo(map);
+  markers.push(m);
+}
+
+let pinsOn = true;
+document.querySelector('[data-toggle="pins"]').addEventListener('click', e => {
+  pinsOn = !pinsOn;
+  markers.forEach(m => pinsOn ? m.addTo(map) : map.removeLayer(m));
+  e.target.textContent = pinsOn ? '显示' : '已隐藏';
+  e.target.classList.toggle('on', pinsOn);
+});
+
+/* =====================================================================
+   取坐标模式 —— 点地图任意处，读出该点在 8192×4711 底图上的像素坐标
+   用来把城市/要塞等图上没标的地点补进去
+   ===================================================================== */
+let picking = false;
+const picklog = document.getElementById('picklog');
+const pickrows = document.getElementById('pickrows');
+const toast = document.getElementById('toast');
+const picks = [];
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('on');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('on'), 2200);
+}
+
+document.getElementById('pickBtn').addEventListener('click', e => {
+  picking = !picking;
+  document.body.classList.toggle('picking', picking);
+  picklog.classList.toggle('on', picking);
+  e.target.classList.toggle('on', picking);
+  e.target.textContent = picking ? '退出取坐标' : '取坐标';
+  if (picking) showToast('点击地图任意位置，读取像素坐标');
+});
+
+map.on('click', e => {
+  if (!picking) return;
+  const x = Math.round(e.latlng.lng);
+  const y = Math.round(H - e.latlng.lat);
+  const line = `${x}, ${y}`;
+  picks.push(line);
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.textContent = line;
+  row.title = '点击复制';
+  row.onclick = () => navigator.clipboard?.writeText(line).then(() => showToast('已复制 ' + line));
+  pickrows.appendChild(row);
+  showToast(`x = ${x}   y = ${y}`);
+});
+</script>
+</body>
+</html>
