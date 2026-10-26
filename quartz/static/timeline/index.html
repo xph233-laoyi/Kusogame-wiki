@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>库索盖姆 · 年表 — 陨落之铭</title>
+<meta name="description" content="《陨落之铭》世界观 · 库索盖姆大陆六大时代时间线。">
+<style>
+:root{
+  --paper:#f4efe3;
+  --paper-2:#ece4d3;
+  --paper-3:#e4dac5;
+  --ink:#2b241c;
+  --ink-soft:#4a4034;
+  --muted:#7c6e5a;
+  --faint:#a2957e;
+  --line:#d6c9b0;
+  --line-strong:#bfae90;
+  --gold:#b8860b;
+  --gold-2:#d9a93f;
+  --old:#8a6a3f;
+  --collapse:#8c3f3a;
+  --hero-era:#4f6b8a;
+  --wander:#6b678c;
+  --kingdom:#6c774a;
+  --main:#a5762a;
+  --shadow:0 10px 30px rgba(66,48,24,.08);
+  --radius:3px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(184,134,11,.08), transparent 60%),
+    radial-gradient(900px 500px at 90% 5%, rgba(79,107,138,.06), transparent 55%),
+    var(--paper);
+  color:var(--ink);
+  font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",Georgia,serif;
+  font-size:15px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/></svg>");
+}
+a{color:inherit}
+::selection{background:rgba(184,134,11,.28)}
+
+/* ── 阅读进度 ── */
+#progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:120;background:transparent}
+#progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-2));transition:width .12s linear}
+
+/* ── 页首 ── */
+.hero{
+  position:relative;z-index:1;overflow:hidden;
+  background:
+    radial-gradient(900px 420px at 78% 12%, rgba(217,169,63,.16), transparent 62%),
+    radial-gradient(700px 500px at 12% 100%, rgba(105,87,140,.18), transparent 60%),
+    linear-gradient(180deg,#191612 0%,#211c15 58%,#171410 100%);
+  color:#efe6d4;
+  border-bottom:1px solid #3a3023;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,241,210,.5) .6px, transparent .6px);
+  background-size:34px 34px;opacity:.16;
+}
+.hero-inner{
+  position:relative;z-index:1;max-width:1180px;margin:0 auto;
+  padding:74px 32px 58px;
+  display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:40px;align-items:center;
+}
+.kicker{
+  margin:0 0 16px;font-size:11px;letter-spacing:.42em;color:var(--gold-2);
+  text-transform:uppercase;font-family:"IBM Plex Mono",Consolas,monospace;
+}
+.hero h1{
+  margin:0;font-weight:600;font-size:clamp(38px,5.4vw,68px);line-height:1.08;
+  letter-spacing:.06em;color:#f6eddc;text-shadow:0 2px 30px rgba(217,169,63,.15);
+}
+.hero h1 span{color:var(--gold-2)}
+.lede{
+  margin:20px 0 0;max-width:34em;color:#cbbfa9;font-size:15.5px;line-height:1.95;
+}
+.hero .meta{
+  margin:26px 0 0;font-size:11.5px;letter-spacing:.2em;color:#8d7f68;
+  font-family:"IBM Plex Mono",Consolas,monospace;
+}
+.hero .meta b{color:var(--gold-2);font-weight:500}
+.hero-links{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px}
+.hero-links a{
+  font-size:12.5px;letter-spacing:.14em;text-decoration:none;color:#e7d7b6;
+  border-bottom:1px solid rgba(217,169,63,.35);padding-bottom:3px;transition:.2s;
+}
+.hero-links a:hover{color:var(--gold-2);border-color:var(--gold-2)}
+.hero-links a.ghost{color:#9c8f78;border-color:rgba(156,143,120,.3)}
+.hero-links a.ghost:hover{color:#d6c9b0;border-color:#d6c9b0}
+
+/* 陨石 */
+.meteor{position:relative;height:300px;display:flex;align-items:center;justify-content:center}
+.meteor svg{width:100%;height:100%;overflow:visible}
+.meteor .ring{fill:none;stroke:rgba(217,169,63,.22);stroke-width:1}
+.meteor .ring.dash{stroke-dasharray:2 7;stroke:rgba(217,169,63,.35)}
+.meteor .core{fill:url(#coreGrad);filter:url(#glow)}
+.meteor .trail{stroke:url(#trailGrad);stroke-linecap:round}
+.meteor .spark{fill:#f0d79b}
+.meteor text{
+  fill:#8d7f68;font-size:10px;letter-spacing:.28em;font-family:"IBM Plex Mono",Consolas,monospace;
+}
+
+/* ── 主容器 ── */
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 32px 100px}
+
+/* 纪年法 */
+.calendar{
+  margin:-38px auto 0;position:relative;z-index:2;
+  background:linear-gradient(180deg,#fbf7ee,#f3ecdc);
+  border:1px solid var(--line);border-top:3px solid var(--gold);
+  box-shadow:var(--shadow);border-radius:2px;
+  padding:26px 30px 24px;
+  display:grid;grid-template-columns:220px minmax(0,1fr);gap:26px 34px;
+}
+.calendar h2{
+  margin:0;font-size:15px;letter-spacing:.28em;color:var(--gold);font-weight:600;
+  border-right:1px solid var(--line);padding-right:20px;
+}
+.calendar h2 small{display:block;margin-top:6px;font-size:10px;letter-spacing:.2em;color:var(--faint);font-weight:400}
+.calendar p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.9}
+.calendar .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:4px}
+.calendar .cell{
+  border-top:1px solid var(--line);padding-top:10px;
+}
+.calendar .cell b{display:block;font-size:12px;letter-spacing:.08em;color:var(--ink)}
+.calendar .cell span{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.6}
+
+/* ── 时代导航 ── */
+.era-nav{
+  position:sticky;top:0;z-index:60;margin:44px -32px 0;padding:12px 32px;
+  background:rgba(244,239,227,.92);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.era-nav .lbl{font-size:10.5px;letter-spacing:.24em;color:var(--faint);margin-right:6px;font-family:"IBM Plex Mono",Consolas,monospace}
+.era-nav a{
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+  font-size:12.5px;letter-spacing:.06em;color:var(--ink-soft);
+  padding:6px 12px;border:1px solid transparent;border-radius:2px;transition:.18s;white-space:nowrap;
+}
+.era-nav a i{width:7px;height:7px;border-radius:50%;background:var(--dot,var(--gold));flex:0 0 auto;opacity:.85}
+.era-nav a:hover{border-color:var(--line-strong);background:#faf6ec}
+.era-nav a.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.era-nav a.active i{background:var(--paper);opacity:1}
+.era-nav .spacer{flex:1}
+.toggle{
+  font:inherit;font-size:12px;letter-spacing:.08em;color:var(--ink-soft);
+  border:1px solid var(--line-strong);background:#faf6ec;border-radius:2px;
+  padding:6px 12px;cursor:pointer;transition:.18s;white-space:nowrap;
+}
+.toggle:hover{border-color:var(--gold);color:var(--gold)}
+.toggle.on{background:var(--gold);border-color:var(--gold);color:#fff8e8}
+
+/* ── 时代区块 ── */
+.era{scroll-margin-top:86px;padding-top:74px}
+.era-head{
+  display:grid;grid-template-columns:88px minmax(0,1fr);gap:24px;align-items:start;
+  padding-bottom:26px;margin-bottom:42px;border-bottom:1px solid var(--line);
+  position:relative;
+}
+.era-head::after{
+  content:"";position:absolute;left:44px;bottom:-1px;width:1px;height:0;
+}
+.era-no{
+  width:72px;height:72px;border:1px solid var(--line-strong);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:var(--accent);letter-spacing:.04em;
+  background:radial-gradient(circle at 40% 35%,#fffdf7,#f1e9d8);
+  box-shadow:inset 0 0 0 5px rgba(255,255,255,.5), 0 3px 12px rgba(66,48,24,.06);
+  font-family:"IBM Plex Mono",Consolas,monospace;
+}
+.era-title{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+.era-title h2{margin:0;font-size:clamp(26px,3.4vw,38px);font-weight:600;letter-spacing:.08em;color:var(--ink)}
+.era-range{
+  font-size:12px;letter-spacing:.16em;color:var(--accent);font-family:"IBM Plex Mono",Consolas,monospace;
+  white-space:nowrap;
+}
+.era-summary{margin:12px 0 0;color:var(--muted);font-size:13.5px;max-width:62em;line-height:1.85}
+
+/* ── 时间轴 ── */
+.events{list-style:none;margin:0;padding:0;position:relative}
+.events::before{
+  content:"";position:absolute;top:8px;bottom:8px;left:50%;width:1px;
+  background:linear-gradient(180deg,transparent,var(--line-strong) 5%,var(--line-strong) 95%,transparent);
+  transform:translateX(-.5px);
+}
+.event{
+  position:relative;display:grid;grid-template-columns:minmax(0,1fr) 92px minmax(0,1fr);
+  align-items:start;margin:0 0 34px;
+}
+.event .node{
+  grid-column:2;justify-self:center;margin-top:26px;position:relative;z-index:2;
+  width:13px;height:13px;border-radius:50%;background:var(--paper);
+  border:2px solid var(--accent);box-shadow:0 0 0 5px var(--paper);
+}
+.event .node::after{
+  content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent);opacity:.7;
+}
+.event .card{
+  grid-column:1;background:linear-gradient(180deg,#fdfaf2,#f6efe0);
+  border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:var(--radius);padding:20px 22px 19px;
+  box-shadow:0 3px 14px rgba(66,48,24,.045);
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s;
+}
+.event:nth-child(even) .card{grid-column:3;border-left:1px solid var(--line);border-right:3px solid var(--accent)}
+.event .card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(66,48,24,.10);border-color:var(--line-strong)}
+.event .year{
+  display:inline-block;font-size:11px;letter-spacing:.16em;color:var(--accent);
+  font-family:"IBM Plex Mono",Consolas,monospace;margin-bottom:7px;
+}
+.event h3{margin:0 0 9px;font-size:19px;line-height:1.45;font-weight:600;letter-spacing:.04em;color:var(--ink)}
+.event p{margin:0 0 9px;font-size:13.5px;line-height:1.88;color:var(--ink-soft)}
+.event p:last-child{margin-bottom:0}
+.event em{font-style:normal;color:var(--accent);}
+.event .quote{
+  margin:10px 0 0;padding:2px 0 2px 14px;border-left:2px solid var(--line-strong);
+  color:var(--muted);font-size:13px;line-height:1.85;
+}
+.event ul.treaty{margin:8px 0 0;padding-left:1.25em;color:var(--ink-soft);font-size:13.2px;line-height:1.9}
+.event ul.treaty li{margin:2px 0}
+.event details{
+  margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;
+}
+.event details summary{
+  cursor:pointer;list-style:none;font-size:11.5px;letter-spacing:.18em;color:var(--gold);
+  display:flex;align-items:center;gap:7px;user-select:none;
+}
+.event details summary::-webkit-details-marker{display:none}
+.event details summary::before{content:"◆";font-size:8px;color:var(--gold-2)}
+.event details[open] summary{margin-bottom:8px}
+.event details .note{font-size:12.8px;line-height:1.85;color:var(--muted)}
+
+/* 里程碑 */
+.event.milestone .card{
+  background:
+    radial-gradient(400px 160px at 85% 0%, rgba(217,169,63,.10), transparent 70%),
+    linear-gradient(180deg,#fffaf0,#f6eedb);
+  border-color:var(--line-strong);
+  box-shadow:0 8px 26px rgba(120,86,20,.10);
+}
+.event.milestone .node{width:17px;height:17px;border-width:3px;background:#fff9ec}
+.event.milestone .node::after{inset:3px;background:var(--gold)}
+.event.milestone h3{font-size:21px}
+.event.milestone h3::after{content:" ◆";font-size:10px;color:var(--gold-2);vertical-align:2px;letter-spacing:0}
+
+/* 精简视图 */
+body.only-key .event:not(.milestone){display:none}
+body.only-key .events::before{opacity:.55}
+.era-count{font-size:10.5px;letter-spacing:.18em;color:var(--faint);font-family:"IBM Plex Mono",Consolas,monospace;margin-left:10px;white-space:nowrap}
+body.only-key .era-count{color:var(--gold)}
+
+/* 减少动态 */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .event .card{transition:none}
+}
+
+/* 页脚 */
+footer{
+  position:relative;z-index:1;margin-top:30px;border-top:1px solid #3a3023;
+  background:linear-gradient(180deg,#1b1712,#14110d);color:#a89a82;
+}
+.foot-inner{max-width:1180px;margin:0 auto;padding:44px 32px 54px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end}
+.foot-inner p{margin:0 0 8px;font-size:12.5px;line-height:1.9}
+.foot-inner a{color:#d8c39a;text-decoration:none;border-bottom:1px solid rgba(216,195,154,.3)}
+.foot-inner a:hover{color:var(--gold-2)}
+.foot-mark{font-size:11px;letter-spacing:.24em;color:#6f6351;font-family:"IBM Plex Mono",Consolas,monospace;text-align:right;line-height:1.9}
+#top{
+  position:fixed;right:22px;bottom:22px;z-index:80;width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--line-strong);background:rgba(250,246,236,.92);color:var(--ink);
+  font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(66,48,24,.14);backdrop-filter:blur(6px);
+}
+#top.show{display:flex}
+#top:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── 响应式 ── */
+@media (max-width:900px){
+  .hero-inner{grid-template-columns:1fr;padding:54px 22px 44px;gap:10px}
+  .meteor{height:170px;order:-1}
+  .calendar{grid-template-columns:1fr;padding:22px;gap:16px}
+  .calendar h2{border-right:none;padding-right:0}
+  .calendar .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  main{padding:0 22px 70px}
+  .era-nav{margin:36px -22px 0;padding:10px 22px;overflow-x:auto;flex-wrap:nowrap}
+  .era-nav .lbl{display:none}
+  .era-nav .spacer{display:none}
+  .era-nav .toggle{order:-1;flex:0 0 auto;margin-right:10px}
+  .era{padding-top:58px}
+  .era-head{grid-template-columns:1fr;gap:14px;padding-bottom:20px;margin-bottom:30px}
+  .era-no{width:56px;height:56px;font-size:17px}
+  .events::before{left:9px}
+  .event{display:block;margin-bottom:26px;padding-left:38px}
+  .event .node{position:absolute;left:3px;top:20px;margin:0}
+  .event .card,.event:nth-child(even) .card{grid-column:auto;border-left:3px solid var(--accent);border-right:1px solid var(--line)}
+  .event .card{padding:17px 18px}
+  .era-count{display:none}
+  .foot-inner{grid-template-columns:1fr;gap:18px}
+  .foot-mark{text-align:left}
+}
+@media (max-width:480px){
+  body{font-size:14px}
+  .hero h1{letter-spacing:.03em}
+  .event h3{font-size:17px}
+  .event.milestone h3{font-size:18px}
+  .event p{font-size:13px}
+  .calendar .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="progress"><i></i></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="kicker">KUSOGAME · P.I. CHRONICLE</p>
+      <h1>库索盖姆 <span>年表</span></h1>
+      <p class="lede">一个被外来者改写、被旧日罪孽缠绕、由英雄后裔重建的世界。自 P.I. 0 年至今，六大时代在一条时间线上展开。</p>
+      <p class="meta"><b>P.I.</b> 纪年 · 六大时代 · <b id="event-count">—</b> 个节点</p>
+      <div class="hero-links">
+        <a href="../../02-年表">文字版年表 →</a>
+        <a class="ghost" href="../../">← 返回设定库</a>
+      </div>
+    </div>
+    <div class="meteor" aria-hidden="true">
+      <svg viewBox="0 0 360 300">
+        <defs>
+          <radialGradient id="coreGrad" cx="42%" cy="38%" r="65%">
+            <stop offset="0%" stop-color="#fff6d8"/>
+            <stop offset="45%" stop-color="#e9c46a"/>
+            <stop offset="100%" stop-color="#a8762a"/>
+          </radialGradient>
+          <linearGradient id="trailGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(217,169,63,0)"/>
+            <stop offset="65%" stop-color="rgba(217,169,63,.28)"/>
+            <stop offset="100%" stop-color="rgba(255,236,190,.85)"/>
+          </linearGradient>
+          <filter id="glow" x="-120%" y="-120%" width="340%" height="340%">
+            <feGaussianBlur stdDeviation="7" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle class="ring dash" cx="228" cy="150" r="96"/>
+        <circle class="ring" cx="228" cy="150" r="64"/>
+        <circle class="ring dash" cx="228" cy="150" r="132"/>
+        <path class="trail" d="M18 262 C 96 246, 156 206, 210 160" stroke-width="3" fill="none" filter="url(#glow)"/>
+        <path class="trail" d="M40 278 C 110 262, 168 226, 214 184" stroke-width="1.4" fill="none" opacity=".55"/>
+        <circle class="spark" cx="86" cy="238" r="1.6"/>
+        <circle class="spark" cx="140" cy="212" r="1.2"/>
+        <circle class="spark" cx="182" cy="186" r="1.4"/>
+        <circle class="core" cx="228" cy="150" r="21"/>
+        <circle cx="228" cy="150" r="33" fill="none" stroke="rgba(255,236,190,.35)" stroke-width="1"/>
+        <text x="228" y="282" text-anchor="middle">0 P.I.</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="calendar" id="calendar">
+    <h2>P.I. 纪年法<small>POST INTRUDER</small></h2>
+    <div>
+      <p>“Post Intruder（闯入者之后）”——一种以颠覆整个世界的重大事件为历史分水岭与纪年起点的大事件纪年法。</p>
+      <div class="grid">
+        <div class="cell"><b>0 P.I.</b><span>“闯入者”陨石撞入北美大陆的那一年</span></div>
+        <div class="cell"><b>B.I.</b><span>Before Intruder · 闯入者坠落之前</span></div>
+        <div class="cell"><b>P.I.</b><span>Post Intruder · 闯入者坠落之后</span></div>
+        <div class="cell"><b>≈ A.D. 1920</b><span>0 P.I. 约等于旧世界公元纪年</span></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="era-nav" id="era-nav" aria-label="时代导航">
+    <span class="lbl">ERAS</span>
+    <span class="spacer"></span>
+    <button class="toggle" id="key-toggle" type="button" aria-pressed="false">只看重点节点</button>
+  </nav>
+
+  <div id="timeline"></div>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <p>本页为《陨落之铭》世界观设定库的可视化年表，内容整理自 <a href="../../02-年表">02 · 年表</a>；设定冲突时以游戏本体为准。</p>
+      <p><a href="../../">← 返回库索盖姆设定库</a> ｜ <a href="../../03-地理与势力/03-地理与势力">地理与势力</a> ｜ <a href="../../05-关键人物">关键人物</a></p>
+    </div>
+    <div class="foot-mark">
+      KUSOGAME · WORLD ARCHIVE<br>
+      P.I. CHRONICLE<br>
+      SIX ERAS
+    </div>
+  </div>
+</footer>
+
+<button id="top" type="button" aria-label="回到顶部">↑</button>
+
+<script>
+/* 内容整理自《陨落之铭》设定库 02 · 年表，未新增设定。 */
+const ERAS = [
+  {
+    id: "old", no: "I", name: "旧世界时代", range: "0 – 100 P.I.", color: "var(--old)",
+    summary: "“闯入者”坠落 → MK-ULTRA → 闯入者计划 → 狄忒力克实验室 → 大崩溃。",
+    events: [
+      {
+        year: "0 P.I.", title: "闯入者坠落", milestone: true,
+        text: ["“闯入者”陨落在北美洲的一个偏僻山谷之中。"]
+      },
+      {
+        year: "~30 P.I.", title: "异能初现 · MK-ULTRA",
+        text: ["受闯入者影响，山谷附近村庄的居民开始展现异于常人的能力，引发美国当局关注。为弄清真相，中情局正式开启“MK-ULTRA”计划。"]
+      },
+      {
+        year: "~50 P.I.", title: "“闯入者计划”启动",
+        text: ["MK-ULTRA 取得突破性进展。为应对冷战下苏联的军备竞赛，美国政府高层计划将该发现应用于军事，项目命名为“闯入者计划”。"]
+      },
+      {
+        year: "~70 P.I.", title: "冷战落幕 · 计划暂停",
+        text: ["苏联解体，冷战结束。政府为缓解财政开支暂停许多军备竞赛项目，包括“闯入者计划”。"]
+      },
+      {
+        year: "~90 P.I.", title: "计划重启 · 狄忒力克实验室",
+        text: ["神秘东方大国崛起，美国感到压力，重启“闯入者计划”，开始筹划狄忒力克实验室。"]
+      },
+      {
+        year: "~95 P.I.", title: "狄忒力克实验室投用",
+        text: ["狄忒力克实验室基本竣工并投入使用。"]
+      },
+      {
+        year: "约 97–99 P.I.", title: "巴拿马计划", noteLabel: "它不知道的事",
+        text: [
+          "旧世界一家前沿 AI 研究机构的内部绝密行动，执念是“让机器读完世界上所有的书”。",
+          "它以攫取几乎全部纸质知识为目标，将书籍破坏性扫描——拆毁原件、知识上传云端。"
+        ],
+        note: "它与“闯入者计划”、狄忒力克实验室、星异物质毫无交集——只是一家自认在替全人类保存记忆的私密技术公司。它不知道那两条保密工程，也不知道自己会在那场风暴里，同全人类的记忆一起被抹去。"
+      },
+      {
+        year: "~100 P.I. 上半年", title: "大崩溃", milestone: true,
+        text: [
+          "一次高危实验导致星异物质泄露，引发全球范围电磁脉冲爆发，人类所有电子设备几乎失效，存储在电子设备与互联网上的知识尽数丢失；而纸质原件多已在“巴拿马计划”中销毁。",
+          "纸与电双亡——人类知识自此连介质都不剩，文明彻底断层，世界进入大崩溃时代。"
+        ]
+      },
+      {
+        year: "~100 P.I. 下半年", title: "肃清部队失联",
+        text: ["美国政府在与狄忒力克实验室失联数月后，派遣肃清部队前往销毁所有实验记录并处决一切活物。然而肃清队伍再也没有回来。"]
+      }
+    ]
+  },
+  {
+    id: "collapse", no: "II", name: "大崩溃时代", range: "101 – 109 P.I.", color: "var(--collapse)",
+    summary: "星异物质泄露失控，全球电磁失效，人类文明断层，世界沦陷。",
+    events: [
+      {
+        year: "~101 P.I.", title: "美国东部沦陷",
+        text: ["星异物质感染者完全失控，失去电子设备的军队完全失去抵抗能力。年末，美国东部各州完全沦陷。"]
+      },
+      {
+        year: "~102 P.I.", title: "美国全面沦陷 · 海禁", milestone: true,
+        text: [
+          "美国全面沦陷，幸存人类躲进拥挤的隔离区，忍饥挨饿、终日惶恐。部分人铤而走险搭私船逃往海外，大多沉入海底或死于大洋中央。",
+          "同年世界各国启用最高级别防疫与海禁戒严，海面上只要发现人类，格杀勿论。"
+        ]
+      },
+      {
+        year: "~104 P.I.", title: "无政府状态",
+        text: ["美国政府放弃一切抵抗，国家陷入无政府状态，人民只能绝望等待死亡降临。"]
+      },
+      {
+        year: "~105 P.I.", title: "星异尘埃扩散 · “英雄”出现", milestone: true,
+        text: ["星异物质尘埃随洋流飘至世界各地，各地大量出现感染者。同时，一些被星异物质强化却未怪物化的无症状感染者开始被发现——他们因强大的力量被称为“英雄”。"]
+      },
+      {
+        year: "~108 P.I.", title: "人口锐减",
+        text: ["世界人口锐减近 60%，处处弥漫血腥与尸腐之气。"]
+      }
+    ]
+  },
+  {
+    id: "heroes", no: "III", name: "英雄时代", range: "110 – 147 P.I.", color: "var(--hero-era)",
+    summary: "英雄团结肃清附着者，却因恐惧与传染性遭排斥，直至被放逐。",
+    events: [
+      {
+        year: "~110 P.I.", title: "英雄结盟",
+        text: ["单打独斗的英雄开始有意识地团结起来，共同肃清星异附着者。劫后余生的人类逐渐能在英雄庇佑下获得稳定生活。"]
+      },
+      {
+        year: "~117 P.I.", title: "附着者避居",
+        text: ["大量附着者被肃清，但仍有不少漏网之鱼。由于忌惮英雄的力量，附着者像有智慧般开始避开人类聚居区。"]
+      },
+      {
+        year: "~125 P.I.", title: "英雄隔离区",
+        text: ["附着者远离聚居区，英雄们逐渐无仗可打。人类领袖为英雄设立单独聚居区，但退役英雄无法回归正常生活，许多人患上创伤后应激障碍；又因“无症状感染者”身份，受到绝大多数人类的厌恶与恐惧。"]
+      },
+      {
+        year: "~147 P.I.", title: "隔离区沦陷", milestone: true,
+        text: ["一名英雄家庭的叛逆子嗣偷跑出英雄隔离区，导致那片聚居区人类被大量感染，两个月后该聚居区沦陷。人类领袖意识到英雄拥有灭绝全人类的力量，且人类根本无法控制。"]
+      }
+    ]
+  },
+  {
+    id: "wander", no: "IV", name: "流浪与迁徙时代", range: "148 – 550 P.I.", color: "var(--wander)",
+    summary: "人类灭亡，大陆漂移合并为超级大陆，英雄后裔远洋来此。",
+    events: [
+      {
+        year: "~148 P.I.", title: "《驱逐英雄法案》", milestone: true,
+        text: ["《驱逐英雄法案》颁布，英雄们被迫远离人类，开始流亡。"]
+      },
+      {
+        year: "~150 P.I.", title: "人类灭亡", milestone: true,
+        text: ["最后人类避难所沦陷，人类彻底灭亡。普通人赶走有能者后失去保护，既死于附着者的卷土重来，又死于附着者身上扩散的星异病传染——旧世界的终结由此成为定局。"]
+      },
+      {
+        year: "~200 P.I.", title: "板块漂移加速",
+        text: ["星异物质影响地球磁场与内部活动，大陆板块漂移加速。"]
+      },
+      {
+        year: "~250 P.I.", title: "超级大陆成形", milestone: true,
+        text: ["所有大陆碰撞形成新的超级大陆。"]
+      },
+      {
+        year: "~280 P.I.", title: "灰域诞生",
+        text: ["星异物质扭曲时空的特性影响地热活动，地核质量增大；远离大陆的海面部分区域重力高达 25 倍地球重力，灰域因此产生——没人知道灰域里有什么，连光与信息都无法逃逸。"]
+      },
+      {
+        year: "~550 P.I.", title: "发现库索盖姆大陆", milestone: true,
+        text: ["为躲避地质灾难而横帆远洋的英雄后裔发现了超级大陆，命名为库索盖姆大陆。"]
+      }
+    ]
+  },
+  {
+    id: "kingdom", no: "V", name: "英雄国度时代", range: "550 P.I. – 至今", color: "var(--kingdom)",
+    summary: "吉尔斯维亚帝国建立，瓦利亚罗斯、瑟拉、龙尼芝顿、湾城联邦相继出现；~1150 草原统一，库尔兰汗国崛起。",
+    events: [
+      {
+        year: "~550 P.I.", title: "吉尔斯率众迁徙",
+        text: ["英雄领袖吉尔斯带领英雄后裔迁徙到大陆中东部的大平原与丘陵地区，以部落形式生活。"]
+      },
+      {
+        year: "~600 P.I.", title: "吉尔斯维亚帝国建立", milestone: true,
+        text: ["吉尔斯被拥护者推举加冕为皇帝，称奥古斯塔一世，吉尔斯维亚帝国建立。"]
+      },
+      {
+        year: "~608 P.I.", title: "奥古斯塔一世“驾崩”", noteLabel: "秘辛",
+        text: ["奥古斯塔一世“驾崩”，其子奥古斯塔二世即位。"],
+        note: "吉尔斯是不朽者，因厌倦帝国权力纷争而留下全部遗物、一夜隐遁。帝国高层隐瞒真相，对外宣称驾崩并举行国葬。详见 05 · 关键人物。"
+      },
+      {
+        year: "~620 P.I.", title: "瑟拉王国建立",
+        text: ["向往起源真相与历史的英雄后裔迁徙到靠近坠落之地的南方沙漠，瑟拉王国建立。"]
+      },
+      {
+        year: "~650 P.I.", title: "奥古斯塔三世即位",
+        text: ["奥古斯塔二世逝世，奥古斯塔三世即位。他昏庸无能、强征暴敛、大兴土木、劳民伤财。帝国北部边境的渔猎部落开始不满。"]
+      },
+      {
+        year: "~653 P.I.", title: "瓦利亚起义", milestone: true,
+        text: ["气候变化使北方边境极度寒冷，猎人抓不到猎物、渔夫捕不到鱼、民不聊生，帝国却仍要求按时纳税。时任保民官的北方人瓦利亚忍无可忍，用伐木斧劈下税务官头颅，揭竿而起。同年吉尔斯维亚帝国出兵平叛。"]
+      },
+      {
+        year: "~654 P.I.", title: "凛冬之约 · 瓦利亚罗斯公国", milestone: true,
+        text: ["在极度寒冷的北境与北方人顽强抵抗下，帝国久攻不下。瓦利亚在凛冬谷与追随者立下“凛冬之约”——不再是“人为人战”，而是“人为人存”：强调团结、分享与适应，而非征服。"],
+        quote: "人为人战 → 人为人存",
+        note: "瓦利亚罗斯公国建立，瓦利亚任第一任大公，与帝国持续对峙。"
+      },
+      {
+        year: "~655 P.I.", title: "龙尼芝顿登陆",
+        text: ["一伙海外强盗登陆帝国东海岸，自称龙尼芝顿王国。帝国正忙于与瓦利亚罗斯作战而无暇东顾。"]
+      },
+      {
+        year: "~656 P.I.", title: "东海岸失守 · 绥靖",
+        text: ["龙尼芝顿人在东海岸势如破竹，迅速征服数个帝国城市。帝国施行绥靖政策，承认其国家势力并割地缓兵。"]
+      },
+      {
+        year: "~658 P.I.", title: "冰原之战", milestone: true,
+        text: ["帝国重装军团与瓦利亚罗斯轻装猎骑兵在冰原多次冲突：帝国军纪严明但难以适应极端气候与游击战术；瓦利亚罗斯骁勇善战但缺乏金属武器铠甲，无法正面抗衡。双方损失惨重，互不相让。"]
+      },
+      {
+        year: "~660 P.I.", title: "《冻土盟约》", milestone: true,
+        text: ["认识到久战必亡，瓦利亚做出务实决策：与其流尽鲜血争夺不毛之地，不如用臣服换取生存与发展的资本。瓦利亚亲赴帝国军营谈判，签订《冻土盟约》："],
+        items: [
+          "瓦利亚罗斯族群承认吉尔斯维亚帝国宗主权，名义上成为其附庸；",
+          "帝国向瓦利亚罗斯传授基础冶金、建筑、造船等技术；",
+          "帝国授予瓦利亚罗斯与帝国进行贸易的垄断特许权；",
+          "瓦利亚罗斯享有高度自治权，帝国不得干涉其内部事务。"
+        ]
+      },
+      {
+        year: "~661 P.I.", title: "战后合作",
+        text: ["停战后帝国与瓦利亚罗斯展开合作，瓦利亚罗斯飞速发展：打造船只、组建商队，将北地稀有毛皮、矿物、兽骨、药材运往南方，换取粮食、布匹和奢侈品。"]
+      },
+      {
+        year: "~665 P.I.", title: "禁魔黑钢",
+        text: ["瓦利亚罗斯公国发现珍贵的“禁魔黑钢”矿脉。然而帝国凭《冻土盟约》中的技术依赖条款和强大政治压力，通过合资开采等手段牢牢控制黑钢资源流向与定价权，使瓦利亚罗斯无法将其转化为完全的军事独立资本。"]
+      },
+      {
+        year: "~700 P.I.", title: "技术依赖制度化",
+        text: ["帝国把《冻土盟约》的技术依赖条款制度化：黑钢的合资开采与统一定价成为定制，技术换资源的格局就此定型，沿用了五百年。"]
+      },
+      {
+        year: "~760 P.I.", title: "君议双轴入宪",
+        text: ["元老院取得“立法同意”与“皇位承认”两项权力，君议双轴由惯例升格为宪制。详见 03 · 吉尔斯维亚帝国。"]
+      },
+      {
+        year: "~820 P.I.", title: "湾城联邦",
+        text: ["西海岸各海湾城邦结成湾城联邦——各城自治，共奉一个只管海运、关税与外交的联邦议会。海运自此成为大陆西部的命脉。"]
+      },
+      {
+        year: "~850 P.I.", title: "龙尼芝顿双王制",
+        text: ["龙尼芝顿双王制确立：战争王主外、内政王掌粮秣与铸币，两王相制，沿用至今。"]
+      },
+      {
+        year: "~1000 P.I.", title: "瑟拉神权化",
+        text: ["瑟拉的好奇燃尽。星异物质终究无法解释，星辰先知掌权，神权体制成形——神谕成了国本。详见 03 · 瑟拉王国。"]
+      },
+      {
+        year: "~1140 P.I.", title: "帝国反攻草原",
+        text: ["帝国改换打法。草原诸部向来小股越境、抢完就跑，帝国大部队赶到时人早没影；而大部队进不了草原——没有驿道就没有补给线。帝国遂组织小股人马反攻进草原。被反攻逼得活不下去的游牧民四散逃难。"],
+        note: "这一步是帝国犯下的最大错误。"
+      },
+      {
+        year: "~1150 P.I.", title: "都兰起势", milestone: true,
+        text: ["强大部族库尔兰部族的首领都兰（自称之名，非本名）从这场灾难里看到的不是苦难，是契机——"],
+        quote: "天下苦帝国已久，若展示怀柔之姿，便可招揽天下人心。",
+        note: "他敞开收容逃难而来的游牧民（不是怜悯，是算计），由此起势；接着吸纳其他部族，不服者以武力征讨——怀柔给肯来的人，刀留给不肯来的人。"
+      },
+      {
+        year: "~1165 P.I.", title: "库尔兰汗国建立", milestone: true,
+        text: ["统一完成，库尔兰汗国建立。散沙时代就此终结。原型参考蒙古帝国式的草原帝国。"]
+      },
+      {
+        year: "~1180 P.I.", title: "绕袭与僵持",
+        text: ["汗国成组织、成规模地绕袭帝国边境——不正面接战，绕过去抢完就走。帝国陷入死局：派大部队进草原要饿死，派小股追不上，固守边境则对方绕行。双方僵持至今，谁也占不到便宜（帝国此时又正陷于提比略的官僚制改革与太子“迷失”，更无余力西顾）。唯一真正在流血的，是夹在中间的帝国边民。"]
+      },
+      {
+        year: "~1190s P.I.", title: "终罗现身 · 太子迷失", milestone: true,
+        text: ["终罗自千年幕后现身，附着者随之蠢动；同年，帝国太子克劳狄乌斯“迷失”。"]
+      },
+      {
+        year: "……", title: "未完待续", minorNote: true,
+        text: ["（未完待续）"]
+      }
+    ]
+  },
+  {
+    id: "main", no: "VI", name: "主线剧情时代", range: "~1200 P.I.", color: "var(--main)",
+    summary: "终罗袭击奥古斯塔，无名崛起，反攻开始。",
+    events: [
+      {
+        year: "现在 · ~1200 P.I.", title: "终罗袭击奥古斯塔", milestone: true,
+        text: ["终罗袭击奥古斯塔 → 无名崛起 → 反攻开始。"]
+      },
+      {
+        year: "待展开", title: "无名的梦",
+        text: ["见 07 · 主线剧情。"]
+      },
+      {
+        year: "秘辛", title: "帝国立国秘辛", noteLabel: "展开",
+        text: ["终罗与吉尔斯（奥古斯塔一世）曾是爱人兼伙伴，一同帮助人类重建文明；终罗遭人类背叛、二人理念分道后，这场爱人之战便绵延至今。"],
+        note: "二人均为不朽者（吉尔斯的永生背后另有隐情）；吉尔斯最终也因厌倦权力纷争而假死隐遁，帝国对外宣称其驾崩。详见 05 · 关键人物。"
+      }
+    ]
+  }
+];
+
+const timeline = document.getElementById("timeline");
+const nav = document.getElementById("era-nav");
+const toggle = document.getElementById("key-toggle");
+let total = 0;
+ERAS.forEach(e => total += e.events.length);
+document.getElementById("event-count").textContent = total;
+
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+
+/* 导航 */
+const links = [];
+ERAS.forEach(era => {
+  const a = el("a");
+  a.href = "#era-" + era.id;
+  a.style.setProperty("--dot", era.color);
+  a.appendChild(el("i"));
+  a.appendChild(document.createTextNode(era.name));
+  nav.insertBefore(a, toggle);
+  links.push({a, id: "era-" + era.id});
+});
+
+/* 时间轴 */
+let sections = [];
+function buildTimeline(onlyKey){
+  timeline.innerHTML = "";
+  ERAS.forEach(era => {
+    const events = onlyKey ? era.events.filter(e => e.milestone) : era.events;
+    const sec = el("section", "era");
+    sec.id = "era-" + era.id;
+    sec.style.setProperty("--accent", era.color);
+
+    const head = el("header", "era-head");
+    head.appendChild(el("div", "era-no", era.no));
+    const ht = el("div");
+    const titleRow = el("div", "era-title");
+    titleRow.appendChild(el("h2", null, era.name));
+    titleRow.appendChild(el("span", "era-range", era.range));
+    const countTxt = onlyKey
+      ? events.length + " / " + era.events.length + " 节点"
+      : era.events.length + " 个节点";
+    titleRow.appendChild(el("span", "era-count", countTxt));
+    ht.appendChild(titleRow);
+    ht.appendChild(el("p", "era-summary", era.summary));
+    head.appendChild(ht);
+    sec.appendChild(head);
+
+    const ol = el("ol", "events");
+    events.forEach(ev => {
+      const li = el("li", "event" + (ev.milestone ? " milestone" : ""));
+      li.appendChild(el("span", "node"));
+      const card = el("article", "card");
+      card.appendChild(el("div", "year", ev.year));
+      card.appendChild(el("h3", null, ev.title));
+      (ev.text || []).forEach(t => card.appendChild(el("p", null, t)));
+      if (ev.quote) card.appendChild(el("p", "quote", ev.quote));
+      if (ev.items){
+        const ul = el("ul", "treaty");
+        ev.items.forEach(it => ul.appendChild(el("li", null, it)));
+        card.appendChild(ul);
+      }
+      if (ev.note){
+        const d = el("details");
+        d.appendChild(el("summary", null, ev.noteLabel || "附注"));
+        d.appendChild(el("div", "note", ev.note));
+        card.appendChild(d);
+      }
+      li.appendChild(card);
+      ol.appendChild(li);
+    });
+    sec.appendChild(ol);
+    timeline.appendChild(sec);
+  });
+  sections = ERAS.map(e => document.getElementById("era-" + e.id));
+}
+buildTimeline(false);
+
+/* 滚动进度 + 回到顶部 + 导航高亮 */
+const bar = document.querySelector("#progress i");
+const topBtn = document.getElementById("top");
+function onScroll(){
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  const p = max > 0 ? h.scrollTop / max : 0;
+  bar.style.width = (p * 100).toFixed(2) + "%";
+  topBtn.classList.toggle("show", h.scrollTop > 700);
+  updateNav();
+}
+document.addEventListener("scroll", onScroll, {passive:true});
+topBtn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+
+function updateNav(){
+  const y = window.scrollY + 160;
+  let current = sections[0];
+  sections.forEach(s => {
+    if (s.getBoundingClientRect().top + window.scrollY <= y) current = s;
+  });
+  links.forEach(l => l.a.classList.toggle("active", l.id === current.id));
+}
+onScroll();
+
+/* 只看重点节点 */
+toggle.addEventListener("click", () => {
+  const on = !document.body.classList.contains("only-key");
+  const activeLink = document.querySelector(".era-nav a.active");
+  const activeHref = activeLink ? activeLink.getAttribute("href") : null;
+  const wasReading = window.scrollY > 600;
+  document.body.classList.toggle("only-key", on);
+  toggle.classList.toggle("on", on);
+  toggle.setAttribute("aria-pressed", on ? "true" : "false");
+  toggle.textContent = on ? "查看全部节点" : "只看重点节点";
+  buildTimeline(on);
+  updateNav();
+  if (wasReading && activeHref){
+    const target = document.querySelector(activeHref);
+    if (target) target.scrollIntoView({behavior:"auto"});
+  }
+  onScroll();
+});
+
+/* 支持 ?key=1 直达重点节点视图 */
+if (new URLSearchParams(location.search).has("key")) toggle.click();
+
+/* 直接带 #时代 打开时，等布局完成后再滚到对应位置 */
+window.addEventListener("load", () => {
+  if (location.hash){
+    const target = document.querySelector(location.hash);
+    if (target) setTimeout(() => target.scrollIntoView(), 80);
+  }
+});
+</script>
+</body>
+</html>
